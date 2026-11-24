@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>循知 · 离线示例</title>
+  <link rel="stylesheet" href="/static/app.css?v=20261124k">
+  <link rel="stylesheet" href="/api/settings/theme.css" id="theme-style">
+</head>
+<body data-offline="1">
+<div class="app-shell">
+{% set active = "offline" %}
+{% include "_chrome.html" %}
+
+<main class="workspace" id="main">
+  <nav class="breadcrumb" aria-label="返回路径">
+    <a href="/">开始学习</a>
+    <span aria-hidden="true">/</span>
+    <span>离线示例</span>
+  </nav>
+  <div class="offline-banner" id="offline-banner">离线示例 · 使用预置资料与题库，不调用模型、不写真实学习记录</div>
+
+  <header class="pack-head">
+    <p class="eyebrow">预置示例</p>
+    <h1 id="offline-title">计算机网络入门示例</h1>
+    <p class="muted" id="offline-meta"></p>
+    <div id="offline-scope"></div>
+  </header>
+
+  <section class="panel" id="offline-diagnosis">
+    <div class="panel-head">
+      <div>
+        <h2>离线诊断示例</h2>
+        <p class="card-sub">选择一种学习范围，查看追问与建议计划如何变化；只写离线状态，不影响真实学情。</p>
+      </div>
+    </div>
+    <div class="actions">
+      <button class="secondary" id="offline-dx-a" type="button">分支 A：已学过子网掩码</button>
+      <button class="secondary" id="offline-dx-b" type="button">分支 B：还没学子网</button>
+      <button class="link" id="offline-dx-reset" type="button">重置离线诊断</button>
+    </div>
+    <div id="offline-dx-result"></div>
+  </section>
+
+  <div class="tabs" role="tablist" aria-label="离线示例视图">
+    <button class="tab active" id="tab-handout" type="button" role="tab" aria-selected="true" aria-controls="view-handout">讲义</button>
+    <button class="tab" id="tab-questions" type="button" role="tab" aria-selected="false" aria-controls="view-questions">复习题</button>
+  </div>
+
+  <section class="panel" id="view-handout" role="tabpanel" aria-labelledby="tab-handout">
+    <div id="offline-handout"></div>
+  </section>
+
+  <section class="panel" id="view-questions" role="tabpanel" aria-labelledby="tab-questions" hidden>
+    <div class="panel-head">
+      <div>
+        <h2>练习</h2>
+        <p class="card-sub" id="offline-answered">已作答 0 / 0</p>
+      </div>
+    </div>
+    <form id="offline-form"></form>
+    <div class="actions">
+      <button class="primary" id="offline-submit" type="button">提交作答</button>
+      <button class="secondary" id="offline-retry" type="button" hidden>按错题考点再练</button>
+      <button class="secondary" id="offline-reset" type="button">重置示例</button>
+    </div>
+    <p class="status" id="offline-status" role="status"></p>
+    <section class="result-panel" id="offline-result" hidden>
+      <h2>本轮结果</h2>
+      <div id="offline-result-body"></div>
+    </section>
+  </section>
+</main>
+</div>
+
+<div class="overlay" id="citation-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="citation-title">
+  <div class="overlay-card">
+    <header class="overlay-head">
+      <strong id="citation-title">资料引用</strong>
+      <button class="icon" id="citation-close" type="button" aria-label="关闭引用">×</button>
+    </header>
+    <div id="citation-body"></div>
+  </div>
+</div>
+
+<script src="/static/render.js?v=20261124g"></script>
+<script src="/static/citation.js?v=20261124g"></script>
+<script src="/static/offline.js?v=20261124g"></script>
+</body>
+</html>

@@ -1,0 +1,2 @@
+{"question_type":"probe_question","stem":"PC-A 的地址是 192.168.1.10/26，PC-B 是 192.168.1.70/26，它们在同一子网吗？","options":["在同一子网","不在同一子网"],"answer_index":1,"explanation":"/26 的子网掩码是 255.255.255.192，PC-A 属于 192.168.1.0–63，PC-B 属于 192.168.1.64–127，因此不在同一子网。","knowledge_point":"IPv4 子网划分","citation_ref":"T1"}
+{"question_type":"probe_question","stem":"接收端连续收到三个重复 ACK 时，发送端应如何处理？","options":["等待重传计时器到期","立即重传丢失的报文段","丢弃该报文段","把发送窗口降为 0"],"answer_index":1,"explanation":"TCP 快速重传在收到三个重复 ACK 后立即重传丢失报文段，不等待重传计时器到期。","knowledge_point":"TCP 快速重传","citation_ref":"T1"}

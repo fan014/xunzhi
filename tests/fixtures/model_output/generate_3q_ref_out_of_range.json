@@ -1,0 +1,7 @@
+{
+  "progress_reading": {"learned": [], "unlearned": [], "weak_points": [], "intent": []},
+  "handout": {"scope": {"covered": ["a"], "not_covered": ["b"]}, "key_points": [], "pitfalls": [], "visual": []},
+  "questions": [
+    {"ordinal": 1, "stem": "越界引用题", "options": ["A", "B", "C", "D"], "answer_index": 0, "explanation": "解析", "citations": [{"ref": "F99"}]}
+  ]
+}

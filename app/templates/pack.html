@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>循知 · 学习计划</title>
+  <link rel="stylesheet" href="/static/app.css?v=20261124k">
+  <link rel="stylesheet" href="/api/settings/theme.css" id="theme-style">
+</head>
+<body data-pack-id="{{ pack_id }}">
+<div class="app-shell">
+{% set active = "home" %}
+{% include "_chrome.html" %}
+
+<main class="workspace" id="main">
+  <nav class="breadcrumb" aria-label="返回路径">
+    <a href="/">开始学习</a>
+    <span aria-hidden="true">/</span>
+    <a href="/records">学习记录</a>
+    <span aria-hidden="true">/</span>
+    <span>学习计划</span>
+  </nav>
+
+  <div class="banner" id="test-banner" hidden></div>
+
+  <header class="pack-head pack-head-study">
+    <p class="eyebrow">学习计划</p>
+    <h1 id="pack-title">学习计划</h1>
+    <div class="module-nav" id="module-nav" aria-label="学习模块"></div>
+    <div class="inline-actions pack-actions" id="pack-actions">
+      <button class="primary" id="continue-practice" type="button">继续练习</button>
+      <a class="link-button" href="/calendar">学习日历</a>
+    </div>
+  </header>
+
+  <div class="practice-scope-banner" id="practice-scope" hidden></div>
+
+  <details class="pack-details" id="pack-details">
+    <summary>学习计划详情</summary>
+    <div class="pack-details-body">
+      <p class="muted" id="pack-meta"></p>
+      <p class="progress-quote" id="progress-quote"></p>
+      <p class="muted" id="source-summary"></p>
+      <div id="scope-box"></div>
+      <div class="relation" id="relation-box"></div>
+      <section class="panel" id="plan-adoption" hidden></section>
+    </div>
+  </details>
+
+  <div class="tabs" role="tablist" aria-label="学习计划视图">
+    <button class="tab active" id="tab-handout" type="button" role="tab" aria-selected="true" aria-controls="view-handout">学习路线</button>
+    <button class="tab" id="tab-modules" type="button" role="tab" aria-selected="false" aria-controls="view-modules" hidden>分模块学习</button>
+    <button class="tab" id="tab-review" type="button" role="tab" aria-selected="false" aria-controls="view-review" hidden>综合复习</button>
+    <button class="tab" id="tab-questions" type="button" role="tab" aria-selected="false" aria-controls="view-questions">练习</button>
+  </div>
+
+  <section class="panel" id="view-handout" role="tabpanel" aria-labelledby="tab-handout">
+    <div id="handout"></div>
+  </section>
+
+  <section class="panel reader-panel" id="view-modules" role="tabpanel" aria-labelledby="tab-modules" hidden>
+    <div id="module-reader" class="study-reader" hidden>
+      <header class="reader-head">
+        <div>
+          <p class="eyebrow" id="reader-eyebrow"></p>
+          <h2 id="reader-title"></h2>
+        </div>
+        <span class="meta" id="reader-count"></span>
+      </header>
+
+      <div class="reader-body">
+        <div class="reader-visual" id="reader-visual"></div>
+        <div class="reader-text" id="reader-text"></div>
+      </div>
+      <footer class="reader-nav">
+        <button class="secondary" id="reader-prev" type="button">上一页</button>
+        <span class="meta" id="reader-page"></span>
+        <button class="secondary" id="reader-next" type="button">下一页</button>
+      </footer>
+    </div>
+    <div id="module-list"></div>
+  </section>
+
+  <section class="panel" id="view-review" role="tabpanel" aria-labelledby="tab-review" hidden>
+    <div id="review-route"></div>
+    <div id="review-handout"></div>
+    <h2>综合复习题</h2>
+    <div id="review-questions"></div>
+  </section>
+
+  <section class="panel" id="view-questions" role="tabpanel" aria-labelledby="tab-questions" hidden>
+    <div class="panel-head">
+      <div>
+        <h2>练习</h2>
+        <p class="card-sub" id="answered-count">已作答 0 / 0</p>
+      </div>
+      <div class="inline-actions">
+        <a class="link-button" id="records-link" href="/records">学习记录</a>
+        <a class="link-button" id="profile-link" href="/profile">个人档案</a>
+      </div>
+    </div>
+    <form id="question-form"></form>
+    <div class="actions">
+      <button class="primary" id="submit-btn" type="button">提交作答</button>
+      <button class="secondary" id="reattempt-btn" type="button" hidden>重新作答</button>
+      <button class="secondary" id="retry-focus-btn" type="button" hidden>针对错题再练</button>
+    </div>
+    <p class="status" id="submit-status" role="status"></p>
+
+    <section class="result-panel" id="result-panel" hidden>
+      <h2>本轮结果</h2>
+      <div id="result-body"></div>
+    </section>
+
+    <section class="assessment-panel" id="assessment-panel" hidden>
+      <h2>本次测评</h2>
+      <p class="hint">交卷后会把本次作答、判分和必要的资料片段发给模型分析；分数和解析不受影响。</p>
+      <p class="status" id="assessment-status" role="status"></p>
+      <div id="assessment-body"></div>
+      <div class="actions" id="assessment-actions"></div>
+      <div id="next-plan-box" hidden></div>
+    </section>
+
+    <div id="mastery-changes"></div>
+
+    <section class="retry-panel" id="retry-panel" hidden>
+      <h2>针对错题再练</h2>
+      <p class="hint">复习重点来自本轮实际答错的考点，可删除、改写或补充，最多 5 条。</p>
+      <ul class="focus-list" id="focus-list"></ul>
+      <div class="focus-add">
+        <input id="focus-input" type="text" maxlength="80" placeholder="补充一条复习重点">
+        <button class="secondary" id="focus-add-btn" type="button">补充</button>
+      </div>
+      <div class="settings retry-settings">
+        <label>题量
+          <select id="retry-count">
+            <option value="3">3 道</option>
+            <option value="5" selected>5 道</option>
+            <option value="8">8 道</option>
+          </select>
+        </label>
+        <span class="hint" id="retry-scope"></span>
+      </div>
+      <button class="primary" id="retry-generate" type="button">用这些重点再练</button>
+      <p class="status" id="retry-status" role="status"></p>
+    </section>
+  </section>
+</main>
+</div>
+
+<div class="overlay" id="citation-overlay" hidden role="dialog" aria-modal="true" aria-labelledby="citation-title">
+  <div class="overlay-card">
+    <header class="overlay-head">
+      <strong id="citation-title">资料引用</strong>
+      <button class="icon" id="citation-close" type="button" aria-label="关闭引用">×</button>
+    </header>
+    <div id="citation-body"></div>
+  </div>
+</div>
+
+<script src="/static/render.js?v=20261124g"></script>
+<script src="/static/visual.js?v=20261124g"></script>
+<script src="/static/citation.js?v=20261124g"></script>
+<script src="/static/plan-flow.js?v=20261124g"></script>
+<script src="/static/pack.js?v=20261124i"></script>
+<script src="/static/reader.js?v=20261124i"></script>
+</body>
+</html>

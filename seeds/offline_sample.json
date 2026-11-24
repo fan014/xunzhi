@@ -1,0 +1,139 @@
+{
+  "version": "1",
+  "title": "计算机网络入门示例（离线）",
+  "topology_url": "/static/offline-topology.svg",
+  "topology_alt": "原创拓扑图：PC-A 与 PC-B 连接 SW1，SW1 连接 R1，PC-C 连接 R1；左侧 192.168.1.0/24，右侧 192.168.2.0/24。",
+  "handout": {
+    "scope": {
+      "covered": ["交换机在同一网段内的转发依据", "同网段与跨网段发包路径的差别"],
+      "not_covered": ["路由协议的具体工作机制"]
+    },
+    "key_points": [
+      {
+        "heading": "先看拓扑：两台主机是否在同一侧",
+        "body": "PC-A 与 PC-B 都连在 SW1 上，属于同一网段；PC-C 在 R1 的另一侧，属于 192.168.2.0/24。",
+        "role": "weak",
+        "citations": [{"ref": "F1", "claim": "PC-A 与 PC-B 同接 SW1"}]
+      },
+      {
+        "heading": "同网段由交换机转发",
+        "body": "同一网段内，交换机按目的 MAC 地址把帧从对应端口发出，不需要路由器参与。",
+        "role": "weak",
+        "citations": [{"ref": "F1", "claim": "SW1 连接同一网段的主机"}]
+      },
+      {
+        "heading": "跨网段才找网关",
+        "body": "目的地址不在本网段时，主机把数据交给默认网关，由 R1 在两个网段之间转发。",
+        "role": "weak",
+        "citations": [{"ref": "F1", "claim": "R1 连接 192.168.1.0/24 与 192.168.2.0/24"}]
+      }
+    ],
+    "pitfalls": [
+      {
+        "heading": "把跨设备当成跨网段",
+        "body": "PC-A 与 PC-B 是不同设备，但同接 SW1，仍属同一网段，不需要 R1。",
+        "role": "weak",
+        "citations": [{"ref": "F1", "claim": "PC-A 与 PC-B 同接 SW1"}]
+      },
+      {
+        "heading": "同网段也去找网关",
+        "body": "默认网关只在目的地址不在本网段时参与；同网段通信由交换机完成。",
+        "role": "weak",
+        "citations": [{"ref": "F1", "claim": "SW1 覆盖同一网段"}]
+      }
+    ],
+    "visual": [
+      {
+        "heading": "沿连线确认路径",
+        "body": "从 PC-A 出发，到 PC-B 只经过 SW1；到 PC-C 需要先到 R1，再到右侧网段。",
+        "role": "weak",
+        "citations": [{"ref": "F1", "claim": "拓扑连线显示 SW1 与 R1 的分界"}]
+      }
+    ]
+  },
+  "questions": [
+    {
+      "id": "offline_q1",
+      "ordinal": 1,
+      "stem": "观察拓扑图，PC-A 向同网段的 PC-B 发送数据帧。在已知 PC-B 的 MAC 地址时，该帧是否需要经过 R1？",
+      "options": ["需要，因为两台主机是不同设备", "不需要，因为 PC-A 与 PC-B 都连接在 SW1 上", "需要，因为所有数据都要先到网关", "无法判断，图中没有标注 IP 地址"],
+      "answer_index": 1,
+      "explanation": "正确答案是 B。PC-A 与 PC-B 同接 SW1，属于同一网段，交换机按目的 MAC 地址即可转发。",
+      "knowledge_point": "同一网段内交换机转发的判断依据",
+      "is_image_based": true
+    },
+    {
+      "id": "offline_q2",
+      "ordinal": 2,
+      "stem": "观察拓扑图，PC-A 要向 PC-C 发送数据。按照图中标注的网段，需要经过哪台设备？",
+      "options": ["只需要 SW1", "不需要任何设备", "需要经过 R1", "需要先回到 PC-B"],
+      "answer_index": 2,
+      "explanation": "正确答案是 C。PC-A 在 192.168.1.0/24，PC-C 在 R1 另一侧的 192.168.2.0/24，跨网段需要经过 R1。",
+      "knowledge_point": "跨网段发包需要经过路由器",
+      "is_image_based": true
+    },
+    {
+      "id": "offline_q3",
+      "ordinal": 3,
+      "stem": "在同一网段内，交换机决定从哪个端口转发数据帧时，主要依据是什么？",
+      "options": ["目的 MAC 地址", "路由协议的度量值", "默认网关的 IP 地址", "目标主机的操作系统"],
+      "answer_index": 0,
+      "explanation": "正确答案是 A。同网段内交换机依据目的 MAC 地址转发，路由协议与网关不参与。",
+      "knowledge_point": "交换机按目的 MAC 地址转发",
+      "is_image_based": false
+    },
+    {
+      "id": "offline_q4",
+      "ordinal": 4,
+      "stem": "观察拓扑图，PC-B 与 PC-A 同属 192.168.1.0/24。PC-B 访问 PC-A 时，是否需要把数据交给默认网关？",
+      "options": ["需要，所有通信都先交给网关", "不需要，两者在同一网段内", "需要，因为 PC-B 没有 MAC 地址", "无法判断，图中未标注主机名"],
+      "answer_index": 1,
+      "explanation": "正确答案是 B。PC-A 与 PC-B 在同一网段，默认网关只在跨网段时参与。",
+      "knowledge_point": "默认网关只在跨网段时参与",
+      "is_image_based": true
+    },
+    {
+      "id": "offline_q5",
+      "ordinal": 5,
+      "stem": "拓扑图中，R1 右侧标注的网段是哪一段？",
+      "options": ["192.168.1.0/24", "192.168.0.0/16", "192.168.2.0/24", "10.0.0.0/8"],
+      "answer_index": 2,
+      "explanation": "正确答案是 C。图中 R1 右侧标注 192.168.2.0/24，左侧为 192.168.1.0/24。",
+      "knowledge_point": "从拓扑图读取网段标注",
+      "is_image_based": true
+    }
+  ],
+  "retry_pool": [
+    {
+      "id": "offline_r1",
+      "ordinal": 1,
+      "knowledge_point": "同一网段内交换机转发的判断依据",
+      "stem": "PC-A 与 PC-C 都连接在同一台交换机上时，两者互发数据是否一定经过路由器？",
+      "options": ["一定经过", "不一定，取决于是否同一网段；同网段由交换机转发", "一定不经过，与网段无关", "只能由广播完成"],
+      "answer_index": 1,
+      "explanation": "同一交换机上的主机若在同一网段，由交换机按 MAC 转发；是否经过路由器取决于网段，而不是设备位置。",
+      "is_image_based": false
+    },
+    {
+      "id": "offline_r2",
+      "ordinal": 2,
+      "knowledge_point": "跨网段发包需要经过路由器",
+      "stem": "目的主机与源主机不在同一网段时，数据包通常先交给谁？",
+      "options": ["同网段的任意主机", "默认网关", "交换机管理口", "DNS 服务器"],
+      "answer_index": 1,
+      "explanation": "跨网段时源主机把数据交给默认网关，由路由器继续转发。",
+      "is_image_based": false
+    },
+    {
+      "id": "offline_r3",
+      "ordinal": 3,
+      "knowledge_point": "默认网关只在跨网段时参与",
+      "stem": "同一网段内的两台主机通信，默认网关的作用是什么？",
+      "options": ["必须参与转发", "不参与该次通信", "负责分配 MAC 地址", "负责建立 TCP 连接"],
+      "answer_index": 1,
+      "explanation": "同网段通信由交换机完成，默认网关只在跨网段时参与。",
+      "is_image_based": false
+    }
+  ],
+  "completed_text": "本轮全部答对：同网段转发与跨网段路径都已区分清楚。可以重置示例再练一次。"
+}

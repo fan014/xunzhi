@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>循知 · 知识库</title>
+  <link rel="stylesheet" href="/static/app.css?v=20261124k">
+  <link rel="stylesheet" href="/api/settings/theme.css" id="theme-style">
+</head>
+<body>
+<div class="app-shell">
+{% set active = "knowledge" %}
+{% include "_chrome.html" %}
+<main class="workspace" id="main">
+  <header class="page-head">
+    <p class="eyebrow">知识库</p>
+    <h1>把一门课的资料放在一起</h1>
+    <p class="page-sub">一个知识库可以持续加入、替换和移除资料；学习时选择整个库或指定资料/章节。</p>
+  </header>
+
+  <section class="panel">
+    <div class="panel-head">
+      <div>
+        <h2>新建知识库</h2>
+        <p class="card-sub">名称和简介可稍后修改；原文件与解析结果可跨库复用。</p>
+      </div>
+    </div>
+    <form id="kb-create-form" class="kb-create-form">
+      <input id="kb-name" maxlength="80" placeholder="例如：计算机网络期末复习" required>
+      <input id="kb-desc" maxlength="200" placeholder="一句简介（可选）">
+      <button class="primary" type="submit">新建</button>
+    </form>
+    <p class="status" id="kb-list-status" role="status"></p>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head">
+      <div>
+        <h2>我的知识库</h2>
+        <p class="card-sub" id="kb-list-meta"></p>
+      </div>
+    </div>
+    <div id="kb-list"></div>
+    <p class="empty" id="kb-list-empty" hidden>还没有知识库。先新建一个，再上传整门课的资料。</p>
+  </section>
+</main>
+</div>
+<script src="/static/knowledge_bases.js?v=20261124g"></script>
+</body>
+</html>

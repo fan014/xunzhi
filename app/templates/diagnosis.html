@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>循知 · 学习诊断</title>
+  <link rel="stylesheet" href="/static/app.css?v=20261124k">
+  <link rel="stylesheet" href="/api/settings/theme.css" id="theme-style">
+</head>
+<body data-session-id="{{ session_id }}">
+<div class="app-shell">
+{% set active = "home" %}
+{% include "_chrome.html" %}
+
+<main class="workspace" id="main">
+  <nav class="breadcrumb" aria-label="返回路径">
+    <a href="/">开始学习</a>
+    <span aria-hidden="true">/</span>
+    <span>学习诊断</span>
+  </nav>
+  <header class="page-head">
+    <p class="eyebrow">学习诊断</p>
+    <h1>先确认这次怎么学</h1>
+    <p class="page-sub">回答几轮针对这份资料的问题。确认计划后，才会写入证据并生成讲义和练习。</p>
+  </header>
+  <p class="status" id="diagnosis-status" role="status"></p>
+
+  <section id="diagnosis-panel">
+    <div class="diagnosis-layout">
+      <div class="stack">
+        <section class="diagnosis-current" id="current-question" aria-live="polite"></section>
+        <div class="actions" id="answer-actions">
+          <button class="primary" id="submit-answer" type="button" hidden>提交回答</button>
+          <button class="secondary" id="skip-answer" type="button" hidden>不确定 / 跳过</button>
+          <button class="link" id="finish-diagnosis" type="button" hidden>结束诊断并查看计划</button>
+        </div>
+        <p class="hint" id="answer-error" role="alert"></p>
+
+        <section id="generation-panel" role="region" aria-label="正式学习计划生成状态" hidden>
+          <h2>学习计划生成</h2>
+          <p class="status" id="generation-status" role="status"></p>
+          <div class="actions" id="generation-actions"></div>
+        </section>
+      </div>
+
+      <aside class="diagnosis-confirmed" id="confirmed-info">
+        <details class="confirmed-details" open>
+          <summary>已确认信息</summary>
+          <h2>已确认信息</h2>
+          <div id="confirmed-list"></div>
+          <p class="hint" id="confirmed-empty">回答后，已确认的学习范围会显示在这里。</p>
+          <p class="hint" id="pending-list"></p>
+        </details>
+      </aside>
+    </div>
+  </section>
+
+  <section class="panel" id="plan-preview" hidden></section>
+</main>
+</div>
+<script src="/static/diagnosis.js?v=20261124g"></script>
+</body>
+</html>

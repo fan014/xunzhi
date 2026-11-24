@@ -1,0 +1,7 @@
+{
+  "progress_reading": {"learned": [], "unlearned": [], "weak_points": [], "intent": []},
+  "handout": {"scope": {"covered": ["a"], "not_covered": ["b"]}, "key_points": [], "pitfalls": [], "visual": []},
+  "questions": [
+    {"ordinal": 1, "stem": "x", "options": ["A", "B", "C", "D"], "answer_index": 9, "explanation": "见教材第 1 页", "citations": [{"ref": "T999"}]}
+  ]
+}

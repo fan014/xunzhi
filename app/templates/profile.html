@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>循知 · 个人学习档案</title>
+  <link rel="stylesheet" href="/static/app.css?v=20261124k">
+  <link rel="stylesheet" href="/api/settings/theme.css" id="theme-style">
+</head>
+<body>
+<div class="app-shell">
+{% set active = "profile" %}
+{% include "_chrome.html" %}
+
+<main class="workspace" id="main">
+  <header class="page-head">
+    <p class="eyebrow">个人档案</p>
+    <h1>学习档案</h1>
+    <p class="page-sub">按资料汇总最近一次有效测评：先看需要巩固什么，再看对应的错题依据和下一轮路线。掌握状态按真实作答结果判定。</p>
+  </header>
+  <p class="status" id="profile-status" role="status"></p>
+  <div id="profile-list"></div>
+  <p class="empty" id="profile-empty" hidden>还没有个人档案。先完成一份练习并交卷，结果页会自动发起测评。</p>
+</main>
+</div>
+
+<script src="/static/plan-flow.js?v=20261124g"></script>
+<script src="/static/profile.js?v=20261124g"></script>
+</body>
+</html>

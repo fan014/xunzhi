@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>循知 · 知识库详情</title>
+  <link rel="stylesheet" href="/static/app.css?v=20261124k">
+  <link rel="stylesheet" href="/api/settings/theme.css" id="theme-style">
+</head>
+<body data-kb-id="{{ kb_id }}">
+<div class="app-shell">
+{% set active = "knowledge" %}
+{% include "_chrome.html" %}
+<main class="workspace" id="main">
+  <nav class="breadcrumb" aria-label="返回路径">
+    <a href="/knowledge-bases">知识库</a>
+    <span aria-hidden="true">/</span>
+    <span id="kb-crumb">知识库详情</span>
+  </nav>
+  <header class="page-head">
+    <p class="eyebrow">知识库</p>
+    <h1 id="kb-title">知识库</h1>
+    <p class="page-sub" id="kb-description"></p>
+    <p class="meta" id="kb-summary"></p>
+  </header>
+
+  <section class="panel">
+    <div class="panel-head">
+      <div>
+        <h2>库信息</h2>
+        <p class="card-sub">改名或编辑简介不会影响已生成学习计划和旧引用。</p>
+      </div>
+      <button class="secondary" id="kb-edit" type="button">编辑名称与简介</button>
+    </div>
+    <p class="status" id="kb-status" role="status"></p>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head">
+      <div>
+        <h2>添加资料</h2>
+        <p class="card-sub">支持 PDF、TXT、Markdown、PNG、JPEG、WebP。批量上传后可在本页查看整理状态。</p>
+      </div>
+    </div>
+    <div class="source-actions">
+      <div class="dropzone compact" id="kb-dropzone" role="button" tabindex="0">
+        <strong>批量上传文件</strong>
+        <span>点击选择，或拖入多个文件</span>
+      </div>
+      <input type="file" id="kb-files" multiple accept=".pdf,.txt,.md,.png,.jpg,.jpeg,.webp" hidden>
+      <select id="kb-existing-source"><option value="">选择已上传资料</option></select>
+      <button class="secondary" id="kb-add-existing" type="button">加入已有资料</button>
+    </div>
+    <p class="status" id="kb-add-status" role="status"></p>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head">
+      <div>
+        <h2>资料</h2>
+        <p class="card-sub" id="kb-item-meta"></p>
+      </div>
+      <button class="secondary" id="kb-delete" type="button">删除知识库</button>
+    </div>
+    <div id="kb-items"></div>
+    <p class="empty" id="kb-items-empty" hidden>还没有资料。上传整门课课件，或加入已上传的资料。</p>
+  </section>
+</main>
+</div>
+<script src="/static/knowledge_base.js?v=20261124g"></script>
+</body>
+</html>

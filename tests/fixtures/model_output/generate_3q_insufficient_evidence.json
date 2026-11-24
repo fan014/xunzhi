@@ -1,0 +1,6 @@
+{
+  "progress_reading": {"learned": [], "unlearned": [], "weak_points": [], "intent": [], "insufficient": false},
+  "handout": {"scope": {"covered": [], "not_covered": []}, "key_points": [], "pitfalls": [], "visual": []},
+  "questions": [],
+  "insufficient_evidence": {"supportable_question_count": 1, "reason": "本次范围内可用证据只支持 1 道有依据的题", "suggested_pages": "12-16"}
+}

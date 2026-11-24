@@ -1,0 +1,167 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "xunzhi_generation_output",
+  "oneOf": [
+    {"$ref": "#/$defs/success_response"},
+    {"$ref": "#/$defs/insufficient_response"}
+  ],
+  "$defs": {
+    "citation": {
+      "type": "object",
+      "required": ["ref"],
+      "properties": {
+        "ref": {
+          "type": "string",
+          "pattern": "^(T|F|P|I)[1-9][0-9]*$",
+          "description": "只能使用本次证据清单中的短编号；示例编号不可照抄"
+        },
+        "claim": {"type": "string"},
+        "box_2d": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "items": {"type": "number", "minimum": 0, "maximum": 1},
+          "description": "可选：相对本次发送整图/整页的 [left,top,right,bottom]，四项 0–1 且正面积；不确定则省略"
+        },
+        "image_description": {
+          "type": "string",
+          "description": "可选：该引用实际能看见的标签、连线或表格内容"
+        }
+      }
+    },
+    "block": {
+      "type": "object",
+      "required": ["body", "citations"],
+      "properties": {
+        "heading": {"type": "string"},
+        "body": {"type": "string", "minLength": 1},
+        "role": {"enum": ["learned", "weak", "unlearned", "neutral"]},
+        "citations": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/citation"}
+        }
+      }
+    },
+    "progress_reading": {
+      "type": "object",
+      "properties": {
+        "learned": {"type": "array", "items": {"type": "string"}},
+        "unlearned": {"type": "array", "items": {"type": "string"}},
+        "weak_points": {"type": "array", "items": {"type": "string"}},
+        "intent": {"type": "array", "items": {"type": "string"}},
+        "insufficient": {"type": "boolean"}
+      }
+    },
+    "handout": {
+      "type": "object",
+      "required": ["scope", "key_points", "pitfalls"],
+      "properties": {
+        "scope": {
+          "type": "object",
+          "required": ["covered", "not_covered"],
+          "properties": {
+            "covered": {
+              "type": "array",
+              "minItems": 1,
+              "items": {"type": "string"},
+              "description": "本次覆盖内容，至少 1 条"
+            },
+            "not_covered": {
+              "type": "array",
+              "minItems": 1,
+              "items": {"type": "string"},
+              "description": "本次明确不覆盖内容，至少 1 条"
+            }
+          }
+        },
+        "key_points": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 6,
+          "items": {"$ref": "#/$defs/block"},
+          "description": "知识要点 3–6 条"
+        },
+        "pitfalls": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 4,
+          "items": {"$ref": "#/$defs/block"},
+          "description": "易错处 2–4 条"
+        },
+        "visual": {
+          "type": "array",
+          "minItems": 0,
+          "items": {"$ref": "#/$defs/block"},
+          "description": "存在图像证据时至少 1 条；纯文字资料可为空"
+        }
+      }
+    },
+    "question": {
+      "type": "object",
+      "required": ["ordinal", "stem", "options", "answer_index", "explanation", "citations"],
+      "properties": {
+        "ordinal": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "从 1 连续递增到本次题量，不得跳号"
+        },
+        "stem": {
+          "type": "string",
+          "minLength": 1,
+          "description": "同一学习包内题干不得重复或仅更换选项顺序"
+        },
+        "options": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "items": {"type": "string", "minLength": 1},
+          "description": "4 个互不相同的选项"
+        },
+        "answer_index": {"type": "integer", "minimum": 0, "maximum": 3},
+        "explanation": {"type": "string", "minLength": 1},
+        "knowledge_point": {"type": "string"},
+        "difficulty_tag": {"enum": ["basic", "consolidate"]},
+        "is_image_based": {"type": "boolean"},
+        "citations": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/citation"}
+        }
+      }
+    },
+    "questions": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 8,
+      "description": "题量严格等于任务请求值（3/5/8），题号从 1 连续",
+      "items": {"$ref": "#/$defs/question"}
+    },
+    "success_response": {
+      "type": "object",
+      "required": ["progress_reading", "handout", "questions"],
+      "properties": {
+        "progress_reading": {"$ref": "#/$defs/progress_reading"},
+        "handout": {"$ref": "#/$defs/handout"},
+        "questions": {"$ref": "#/$defs/questions"},
+        "insufficient_evidence": {"type": "null"}
+      }
+    },
+    "insufficient_response": {
+      "type": "object",
+      "required": ["insufficient_evidence"],
+      "additionalProperties": false,
+      "properties": {
+        "insufficient_evidence": {
+          "type": "object",
+          "required": ["supportable_question_count"],
+          "properties": {
+            "supportable_question_count": {"type": "integer", "minimum": 0},
+            "reason": {"type": "string"},
+            "suggested_pages": {"type": "string"}
+          }
+        }
+      }
+    }
+  }
+}

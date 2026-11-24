@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>循知 · 学习日历</title>
+  <link rel="stylesheet" href="/static/app.css?v=20261124k">
+  <link rel="stylesheet" href="/api/settings/theme.css" id="theme-style">
+</head>
+<body>
+<div class="app-shell">
+{% set active = "calendar" %}
+{% include "_chrome.html" %}
+
+<main class="workspace" id="main">
+  <header class="page-head">
+    <p class="eyebrow">学习日历</p>
+    <h1>按自己的节奏学</h1>
+    <p class="page-sub">查看每天安排的任务，完成后回到这里看进度。日期按本机本地时间计算。</p>
+  </header>
+
+  <div class="calendar-layout">
+    <section class="panel calendar-panel" aria-label="学习日历">
+      <div class="calendar-head">
+        <button class="icon" id="calendar-prev" type="button" aria-label="上一个月">‹</button>
+        <h2 id="calendar-month">本月</h2>
+        <button class="icon" id="calendar-next" type="button" aria-label="下一个月">›</button>
+        <button class="secondary" id="calendar-today" type="button">今天</button>
+      </div>
+      <div class="calendar-weekdays" aria-hidden="true">
+        <span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span><span>日</span>
+      </div>
+      <div class="calendar-grid" id="calendar-grid" role="grid" aria-label="按月份显示的学习任务"></div>
+      <div class="calendar-legend" aria-label="日历标记说明">
+        <span><i class="legend-dot has-tasks"></i>有任务</span>
+        <span><i class="legend-dot completed"></i>已完成</span>
+        <span><i class="legend-dot overdue"></i>待补</span>
+      </div>
+    </section>
+
+    <aside class="stack calendar-side">
+      <section class="panel" id="plan-card">
+        <div class="panel-head">
+          <div>
+            <h2>学习计划</h2>
+            <p class="card-sub">默认打开最近学习的计划，可切换查看。</p>
+          </div>
+          <select id="plan-select" aria-label="切换学习计划"></select>
+        </div>
+        <p class="empty" id="plan-empty" hidden>还没有可查看的学习计划。先新建学习并确认学习计划。</p>
+        <div id="plan-body">
+          <h3 class="calendar-plan-name" id="plan-name"></h3>
+          <p class="meta" id="plan-range"></p>
+          <div class="progress-track" aria-hidden="true"><span id="plan-progress-bar"></span></div>
+          <p class="calendar-progress" id="plan-progress-label"></p>
+          <p class="hint" id="plan-pack-status"></p>
+        </div>
+      </section>
+
+      <section class="panel" id="shift-panel" hidden>
+        <div class="panel-head">
+          <div>
+            <h2>计划前移</h2>
+            <p class="meta" id="shift-message"></p>
+          </div>
+        </div>
+        <p class="hint" id="shift-summary"></p>
+        <div class="shift-changes" id="shift-changes" hidden></div>
+        <div class="actions">
+          <button class="secondary" id="shift-dismiss" type="button">保持原安排</button>
+          <button class="secondary" id="shift-view" type="button">查看调整</button>
+          <button class="primary" id="shift-confirm" type="button" hidden>确认调整</button>
+        </div>
+        <p class="hint" id="shift-status" role="status"></p>
+      </section>
+
+      <section class="panel" id="selected-panel">
+        <div class="panel-head">
+          <div>
+            <h2 id="selected-title">今天</h2>
+            <p class="meta" id="selected-meta"></p>
+          </div>
+        </div>
+        <p class="calendar-feedback" id="calendar-feedback"></p>
+        <ul class="schedule-task-list" id="task-list"></ul>
+        <div class="actions" id="selected-actions"></div>
+      </section>
+
+      <section class="panel" id="brief-panel" hidden>
+        <div class="panel-head">
+          <div>
+            <h2>学习简报</h2>
+            <p class="meta" id="brief-date"></p>
+          </div>
+        </div>
+        <p class="calendar-feedback" id="brief-summary"></p>
+        <div class="brief-stats" id="brief-stats"></div>
+        <div class="brief-advice" id="brief-advice"></div>
+        <div class="actions" id="brief-actions"></div>
+      </section>
+
+      <section class="panel" id="unassigned-panel" hidden>
+        <h2>未安排日程</h2>
+        <p class="hint">这条学习计划还没有安排学习时间。已有讲义、练习和阅读位置都会保留。</p>
+        <button class="secondary" id="open-schedule-form" type="button">安排学习时间</button>
+        <div id="schedule-form" hidden>
+          <div class="time-form">
+            <label class="field">
+              <span class="field-label">开始日期</span>
+              <input type="date" id="schedule-start">
+            </label>
+            <fieldset class="segmented" id="schedule-period-group">
+              <legend>你希望多久学完？</legend>
+              <label><input type="radio" name="schedule_period" value="7"> 1 周</label>
+              <label><input type="radio" name="schedule_period" value="14" checked> 2 周</label>
+              <label><input type="radio" name="schedule_period" value="30"> 1 个月</label>
+              <label><input type="radio" name="schedule_period" value="custom"> 自定义完成日期</label>
+            </fieldset>
+            <label class="field" id="target-wrap" hidden>
+              <span class="field-label">预计完成日期</span>
+              <input type="date" id="schedule-target">
+            </label>
+            <fieldset class="segmented" id="schedule-daily-group">
+              <legend>每天大概能学多久？</legend>
+              <label><input type="radio" name="schedule_daily" value="15"> 15 分钟</label>
+              <label><input type="radio" name="schedule_daily" value="30" checked> 30 分钟</label>
+              <label><input type="radio" name="schedule_daily" value="60"> 60 分钟</label>
+              <label><input type="radio" name="schedule_daily" value="custom"> 自定义分钟</label>
+            </fieldset>
+            <label class="field" id="daily-wrap" hidden>
+              <span class="field-label">每天分钟数</span>
+              <input type="number" id="schedule-daily-custom" min="5" max="1440" step="5" value="30">
+            </label>
+            <div class="actions">
+              <button class="secondary" id="preview-schedule" type="button">预览日程</button>
+              <button class="primary" id="save-schedule" type="button">保存时间安排</button>
+            </div>
+            <p class="hint" id="schedule-preview" role="status"></p>
+          </div>
+        </div>
+      </section>
+    </aside>
+  </div>
+</main>
+</div>
+<dialog id="reschedule-dialog" class="dialog">
+  <div class="dialog-body">
+    <h2>改期</h2>
+    <p class="meta" id="reschedule-task"></p>
+    <label class="field">
+      <span class="field-label">目标日期</span>
+      <input type="date" id="reschedule-date">
+    </label>
+    <p class="hint" id="reschedule-preview" role="status"></p>
+    <div class="actions">
+      <button class="secondary" id="reschedule-cancel" type="button">取消</button>
+      <button class="primary" id="reschedule-save" type="button">确认改期</button>
+    </div>
+  </div>
+</dialog>
+<script src="/static/calendar.js?v=20261124i"></script>
+</body>
+</html>

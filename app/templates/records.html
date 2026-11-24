@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>循知 · 学习记录与资料管理</title>
+  <link rel="stylesheet" href="/static/app.css?v=20261124k">
+  <link rel="stylesheet" href="/api/settings/theme.css" id="theme-style">
+</head>
+<body>
+<div class="app-shell">
+{% set active = "records" %}
+{% include "_chrome.html" %}
+
+<main class="workspace" id="main">
+  <header class="page-head">
+    <p class="eyebrow">学习记录</p>
+    <h1>继续与回看</h1>
+    <p class="page-sub">继续学习优先使用最近作答和已确认计划；历史学习计划与原始资料保留在这里。</p>
+  </header>
+
+  <section class="panel" id="continue-learning">
+    <div class="panel-head">
+      <div>
+        <h2>继续学习</h2>
+        <p class="card-sub">根据最近作答生成下一次复习建议；确认后才会生成讲义和练习。</p>
+      </div>
+      <a class="link-button" href="/profile">查看个人档案</a>
+    </div>
+    <ul class="record-list" id="continue-list"></ul>
+    <p class="empty" id="continue-empty" hidden>还没有可继续的学习资料。</p>
+    <div id="continue-draft" hidden></div>
+  </section>
+
+  <section class="panel">
+    <div class="record-head">
+      <div>
+        <h2>历史学习计划</h2>
+        <p class="card-sub">打开旧包可回看讲义、成绩与计划关联。</p>
+      </div>
+      <a class="secondary link-button" href="/offline">离线示例</a>
+    </div>
+    <ul class="record-list" id="record-list"></ul>
+    <p class="empty" id="record-empty" hidden>还没有学习记录。从首页生成第一份学习计划。</p>
+  </section>
+
+  <section class="panel">
+    <div class="record-head">
+      <div>
+        <h2>资料管理</h2>
+        <p class="card-sub">删除原始资料会移除原图与提取内容；历史学习计划仍保留讲义与成绩，引用显示「来源资料已删除」。</p>
+      </div>
+    </div>
+    <ul class="record-list" id="source-list"></ul>
+    <p class="empty" id="source-empty" hidden>还没有保存的资料。</p>
+  </section>
+</main>
+</div>
+<script src="/static/plan-flow.js?v=20261124g"></script>
+<script src="/static/records.js?v=20261124g"></script>
+</body>
+</html>

@@ -1,0 +1,140 @@
+{
+  "progress_reading": {
+    "learned": ["交换机转发"],
+    "unlearned": ["路由协议"],
+    "weak_points": ["同一网段与跨网段发包混淆"],
+    "intent": ["用拓扑图练习"],
+    "insufficient": false
+  },
+  "handout": {
+    "scope": {
+      "covered": ["交换机在同一网段内的转发依据", "同网段与跨网段发包路径的差别"],
+      "not_covered": ["路由协议的具体工作机制", "路由表的构建与计算"]
+    },
+    "key_points": [
+      {
+        "heading": "先分清同网段与跨网段",
+        "body": "图中 PC-A 与 PC-B 都连接在 SW1 上，属于同一网段；PC-C 连接在 R1 另一侧，属于另一网段。同网段内由交换机按目的 MAC 地址转发，跨网段才需要默认网关和路由器。",
+        "role": "weak",
+        "citations": [{"ref": "F1", "claim": "PC-A 与 PC-B 同接 SW1"}]
+      },
+      {
+        "heading": "交换机转发看什么",
+        "body": "交换机在同一广播域内根据目的 MAC 地址决定从哪个端口发出帧，不依赖 IP 路由。只有目的地址不在本网段时，主机才把数据交给网关。",
+        "role": "weak",
+        "citations": [{"ref": "F1", "claim": "SW1 连接 PC-A 与 PC-B"}]
+      },
+      {
+        "heading": "路由器在什么位置出现",
+        "body": "R1 连接 192.168.1.0/24 与 192.168.2.0/24 两个网段。只有当目的主机不在本网段时，数据才需要经过 R1；路由协议属于后续学习内容，本轮不展开。",
+        "role": "unlearned",
+        "citations": [{"ref": "F1", "claim": "R1 连接两个网段"}]
+      }
+    ],
+    "pitfalls": [
+      {
+        "heading": "把跨设备当成跨网段",
+        "body": "PC-A 与 PC-B 是不同设备，但都接在 SW1 上，仍属同一网段，不需要路由器。判断依据是网段，不是设备数量。",
+        "role": "weak",
+        "citations": [{"ref": "F1", "claim": "PC-A 与 PC-B 同接 SW1"}]
+      },
+      {
+        "heading": "同网段也去找网关",
+        "body": "同网段主机的 MAC 地址可直接由交换机转发获得，默认网关只在目的地址不在本网段时参与。",
+        "role": "weak",
+        "citations": [{"ref": "F1", "claim": "SW1 覆盖同一网段"}]
+      }
+    ],
+    "visual": [
+      {
+        "heading": "看图确认转发范围",
+        "body": "沿 SW1 的连线可以看到 PC-A、PC-B 位于同一侧；PC-C 在 R1 的另一侧。因此 PC-A 到 PC-B 的帧由 SW1 转发，PC-A 到 PC-C 的帧才需要经过 R1。",
+        "role": "weak",
+        "citations": [{"ref": "F1", "claim": "拓扑连线显示 SW1 与 R1 的分界"}]
+      }
+    ]
+  },
+  "questions": [
+    {
+      "ordinal": 1,
+      "stem": "观察拓扑图，PC-A 向同网段的 PC-B 发送数据帧。在 PC-A 已知 PC-B 的 MAC 地址的前提下，该帧是否需要经过路由器 R1？",
+      "options": [
+        "需要，因为两台主机是不同设备",
+        "不需要，因为 PC-A 与 PC-B 都连接在 SW1 上",
+        "需要，因为所有数据都要先到网关",
+        "无法判断，图中没有标注 IP 地址"
+      ],
+      "answer_index": 1,
+      "explanation": "正确答案是 B。PC-A 与 PC-B 同接 SW1，属于同一网段，交换机按目的 MAC 地址即可转发。",
+      "knowledge_point": "同一网段内交换机转发的判断依据",
+      "difficulty_tag": "consolidate",
+      "is_image_based": true,
+      "citations": [{"ref": "F1", "claim": "PC-A 与 PC-B 同接 SW1"}]
+    },
+    {
+      "ordinal": 2,
+      "stem": "观察拓扑图，PC-A 要向 PC-C 发送数据。按照图中标注的网段，这个数据包需要经过哪台设备才能到达 PC-C？",
+      "options": [
+        "只需要 SW1",
+        "不需要任何设备，直接到达",
+        "需要经过 R1",
+        "需要先回到 PC-B 再转发"
+      ],
+      "answer_index": 2,
+      "explanation": "正确答案是 C。PC-A 与 PC-C 分属 R1 两侧的网段，跨网段通信需要经过路由器 R1。",
+      "knowledge_point": "跨网段发包需要经过路由器",
+      "difficulty_tag": "consolidate",
+      "is_image_based": true,
+      "citations": [{"ref": "F1", "claim": "R1 连接两个网段"}]
+    },
+    {
+      "ordinal": 3,
+      "stem": "在同一网段内，交换机决定从哪个端口转发数据帧时，主要依据是什么？",
+      "options": [
+        "目的 MAC 地址",
+        "路由协议的度量值",
+        "默认网关的 IP 地址",
+        "目标主机的操作系统"
+      ],
+      "answer_index": 0,
+      "explanation": "正确答案是 A。同网段内交换机依据目的 MAC 地址转发。",
+      "knowledge_point": "交换机按目的 MAC 地址转发",
+      "difficulty_tag": "consolidate",
+      "is_image_based": false,
+      "citations": [{"ref": "F1", "claim": "SW1 在同一网段内转发"}]
+    },
+    {
+      "ordinal": 4,
+      "stem": "观察拓扑图，PC-B 已经把数据帧发给 SW1，目的 MAC 是 PC-A。SW1 接下来最可能怎么处理？",
+      "options": [
+        "把帧交给 R1，再由 R1 转回本网段",
+        "按目的 MAC 从连接 PC-A 的端口转发",
+        "丢弃该帧，因为源和目的都在同一网段",
+        "先查路由表，再决定下一跳"
+      ],
+      "answer_index": 1,
+      "explanation": "正确答案是 B。PC-A 与 PC-B 在同一网段，SW1 按目的 MAC 地址从对应端口转发，不需要路由器。",
+      "knowledge_point": "同一网段内交换机转发的判断依据",
+      "difficulty_tag": "consolidate",
+      "is_image_based": true,
+      "citations": [{"ref": "F1", "claim": "SW1 连接 PC-A 与 PC-B"}]
+    },
+    {
+      "ordinal": 5,
+      "stem": "观察拓扑图，PC-C 向同一网段内的另一台主机发送帧。这个帧首先应该交给哪台设备处理？",
+      "options": [
+        "R1，因为跨网段必须经过路由器",
+        "PC-A，因为它在同一侧",
+        "SW1，因为目的主机在同一网段",
+        "不需要任何设备，直接广播到全网"
+      ],
+      "answer_index": 2,
+      "explanation": "正确答案是 C。目的主机与 PC-C 在同一网段时，帧先由该网段的交换机 SW1 按目的 MAC 转发。",
+      "knowledge_point": "同一网段内交换机转发的判断依据",
+      "difficulty_tag": "consolidate",
+      "is_image_based": true,
+      "citations": [{"ref": "F1", "claim": "SW1 覆盖同一网段"}]
+    }
+  ],
+  "insufficient_evidence": null
+}

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>循知 · 设置</title>
+  <link rel="stylesheet" href="/static/app.css?v=20261124s">
+  <link rel="stylesheet" href="/api/settings/theme.css" id="theme-style">
+</head>
+<body>
+<div class="app-shell">
+{% set active = "settings" %}
+{% include "_chrome.html" %}
+
+<main class="workspace" id="main">
+  <header class="page-head">
+    <p class="eyebrow">设置</p>
+    <h1>本机学习设置</h1>
+    <p class="page-sub">个人、模型与外观各自保存。切换学习者只影响本机学习记录，不会改动其他电脑上的数据。</p>
+  </header>
+
+  <div class="settings-layout">
+    <nav class="settings-tabs" aria-label="设置分类">
+      <a href="#settings-person" data-settings-link="settings-person" aria-current="page">个人</a>
+      <a href="#settings-model" data-settings-link="settings-model">模型</a>
+      <a href="#settings-appearance" data-settings-link="settings-appearance">外观</a>
+      <a href="#settings-reminder" data-settings-link="settings-reminder">学习提醒</a>
+    </nav>
+    <div class="settings-grid">
+    <section class="panel settings-card settings-panel" id="settings-person" data-settings-panel="settings-person" aria-labelledby="settings-person-title">
+      <div class="panel-head">
+        <div>
+          <h2 id="settings-person-title">个人</h2>
+          <p class="card-sub">当前本机用户与学习者工作区。</p>
+        </div>
+        <span class="badge accent" id="current-user-badge">本机用户</span>
+      </div>
+      <p class="settings-current">当前学习者：<strong id="current-user-name">读取中…</strong></p>
+      <form id="profile-form" class="settings-form">
+        <label class="field">
+          <span class="field-label">显示名</span>
+          <input type="text" id="display-name" maxlength="40" autocomplete="off" placeholder="例如：小明">
+        </label>
+        <div class="actions">
+          <button class="secondary" type="submit" id="save-profile">保存显示名</button>
+        </div>
+      </form>
+      <p class="hint" id="profile-status" role="status"></p>
+
+      <div class="settings-divider"></div>
+      <div class="settings-subhead">
+        <h3>学习者</h3>
+        <p class="hint">新建学习者使用独立的知识库、计划与学习记录。</p>
+      </div>
+      <div class="actions">
+        <button class="secondary" type="button" id="open-create-user">新建学习者</button>
+      </div>
+      <form id="create-user-form" class="settings-form" hidden>
+        <label class="field">
+          <span class="field-label">新学习者显示名</span>
+          <input type="text" id="new-user-name" maxlength="40" autocomplete="off" placeholder="例如：小雨">
+        </label>
+        <div class="actions">
+          <button class="secondary" type="button" id="cancel-create-user">取消</button>
+          <button class="primary" type="submit" id="create-user">创建</button>
+        </div>
+      </form>
+      <div class="settings-user-switch">
+        <label class="field">
+          <span class="field-label">切换学习者</span>
+          <select id="user-select" aria-label="选择要切换的学习者"></select>
+        </label>
+        <button class="primary" type="button" id="switch-user">切换用户</button>
+      </div>
+      <p class="hint" id="switch-note" role="status"></p>
+      <p class="hint" id="switch-status" role="status"></p>
+    </section>
+
+    <section class="panel settings-card settings-panel" id="settings-model" data-settings-panel="settings-model" aria-labelledby="settings-model-title" hidden>
+      <div class="panel-head">
+        <div>
+          <h2 id="settings-model-title">模型</h2>
+          <p class="card-sub">诊断、讲义、题目和测评共用这一份 DeepSeek 配置。</p>
+        </div>
+      </div>
+      <div class="model-state" id="model-state">
+        <p><span class="meta">配置状态</span><strong id="model-source">读取中…</strong></p>
+        <p><span class="meta">密钥</span><span id="model-masked">—</span></p>
+        <p><span class="meta">模型</span><span id="model-name">—</span></p>
+      </div>
+      <form id="model-form" class="settings-form">
+        <label class="field">
+          <span class="field-label">替换密钥</span>
+          <input type="password" id="model-key" autocomplete="new-password" placeholder="输入新的 DeepSeek API Key；已有时可留空">
+        </label>
+        <div class="actions">
+          <button class="secondary" type="button" id="test-model">测试连接</button>
+          <button class="primary" type="submit" id="save-model">保存密钥</button>
+          <button class="secondary" type="button" id="reset-model">恢复默认配置</button>
+        </div>
+      </form>
+      <p class="hint" id="model-status" role="status"></p>
+      <p class="hint" id="model-test-status" role="status"></p>
+    </section>
+
+    <section class="panel settings-card settings-panel" id="settings-appearance" data-settings-panel="settings-appearance" aria-labelledby="settings-appearance-title" hidden>
+      <div class="panel-head">
+        <div>
+          <h2 id="settings-appearance-title">外观</h2>
+          <p class="card-sub">预览即时生效，保存后按当前学习者记住。</p>
+        </div>
+      </div>
+      <fieldset class="segmented settings-segmented">
+        <legend>主题</legend>
+        <label><input type="radio" name="theme" value="system"> 跟随系统</label>
+        <label><input type="radio" name="theme" value="light"> 浅色</label>
+        <label><input type="radio" name="theme" value="dark"> 深色</label>
+      </fieldset>
+      <fieldset class="segmented settings-segmented">
+        <legend>字号</legend>
+        <label><input type="radio" name="font_size" value="small"> 小</label>
+        <label><input type="radio" name="font_size" value="standard"> 标准</label>
+        <label><input type="radio" name="font_size" value="large"> 大</label>
+      </fieldset>
+      <fieldset class="segmented settings-segmented">
+        <legend>字体</legend>
+        <label><input type="radio" name="font_family" value="system"> 系统默认</label>
+        <label><input type="radio" name="font_family" value="reading"> 宋体阅读</label>
+      </fieldset>
+      <div class="actions">
+        <button class="primary" type="button" id="save-appearance">保存外观</button>
+      </div>
+      <p class="hint" id="appearance-status" role="status"></p>
+    </section>
+
+    <section class="panel settings-card settings-card-wide settings-panel" id="settings-reminder" data-settings-panel="settings-reminder" aria-labelledby="settings-reminder-title" hidden>
+      <div class="panel-head">
+        <div>
+          <h2 id="settings-reminder-title">学习提醒</h2>
+          <p class="card-sub">启用后，每天在指定时间把当天仍待完成的任务发到邮箱；默认关闭，按当前学习者保存。</p>
+        </div>
+        <span class="badge" id="reminder-state-badge">未启用</span>
+      </div>
+      <form id="reminder-form" class="settings-form">
+        <div class="reminder-grid">
+          <label class="field"><span class="field-label">收件邮箱</span><input type="email" id="reminder-email" autocomplete="off" placeholder="name@example.com"></label>
+          <label class="field"><span class="field-label">每日提醒时间</span><input type="time" id="reminder-time" value="20:00"></label>
+          <label class="field"><span class="field-label">SMTP 服务器</span><input type="text" id="reminder-smtp-host" autocomplete="off" placeholder="smtp.example.com"></label>
+          <label class="field"><span class="field-label">SMTP 端口</span><input type="number" id="reminder-smtp-port" min="1" max="65535" value="587"></label>
+          <label class="field"><span class="field-label">加密方式</span>
+            <select id="reminder-smtp-encryption">
+              <option value="starttls">STARTTLS（常用 587）</option>
+              <option value="ssl">SSL/TLS（常用 465）</option>
+              <option value="none">不加密（仅本机测试）</option>
+            </select>
+          </label>
+          <label class="field"><span class="field-label">SMTP 账号</span><input type="text" id="reminder-smtp-username" autocomplete="off" placeholder="可选"></label>
+          <label class="field reminder-wide"><span class="field-label">密码 / 授权码</span><input type="password" id="reminder-smtp-password" autocomplete="new-password" placeholder="已保存时留空保持不变"><span class="hint" id="reminder-password-hint"></span></label>
+        </div>
+        <p class="hint" id="reminder-timezone">时间按本机时区解释。</p>
+        <div class="actions">
+          <button class="secondary" type="submit" id="save-reminder">保存提醒设置</button>
+          <button class="secondary" type="button" id="preview-reminder">预览今天的提醒</button>
+          <button class="secondary" type="button" id="test-reminder">发送测试邮件</button>
+          <button class="primary" type="button" id="toggle-reminder">启用提醒</button>
+        </div>
+      </form>
+      <p class="hint" id="reminder-status" role="status"></p>
+      <p class="hint" id="reminder-test-status" role="status"></p>
+      <div id="reminder-preview-wrap" hidden>
+        <h3>邮件预览</h3>
+        <p class="meta" id="reminder-preview-subject"></p>
+        <pre id="reminder-preview"></pre>
+      </div>
+    </section>
+    </div>
+  </div>
+</main>
+</div>
+<script src="/static/settings.js?v=20261124f"></script>
+</body>
+</html>
