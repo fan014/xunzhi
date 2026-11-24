@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>循知 · 开始学习</title>
-  <link rel="stylesheet" href="/static/app.css?v=20261124k">
+  <link rel="stylesheet" href="/static/app.css?v=20261124z">
   <link rel="stylesheet" href="/api/settings/theme.css" id="theme-style">
 </head>
 <body>
@@ -117,7 +117,7 @@
           <textarea id="progress-input" maxlength="500" rows="3"
             aria-label="补充一句本次学习目标"
             placeholder="想弄清同网段和跨网段转发的区别。"></textarea>
-          <div class="inline-actions" style="justify-content: space-between;">
+          <div class="inline-actions spread">
             <span class="field-hint">学习进度会在诊断问答中确认。</span>
             <span class="counter"><span id="progress-count">0</span> / 500</span>
           </div>
@@ -180,7 +180,7 @@
 
         </div>
 
-        <div class="work-primary" style="margin-top: 18px;">
+        <div class="work-primary">
           <button class="primary" id="generate-btn" type="button" disabled>开始学习诊断</button>
           <p class="hint" id="disabled-reason">先上传或选择至少 1 份资料</p>
         </div>
@@ -188,7 +188,7 @@
         <div class="progress-stages" id="stages" hidden></div>
         <button class="secondary" id="cancel-btn" type="button" hidden>取消生成</button>
 
-        <div class="privacy" style="margin-top: 18px; border-top: 1px solid var(--line); padding-top: 14px;">
+        <div class="privacy privacy-foot">
           诊断时会把你选择的资料内容与目标发送至模型服务，用于生成问题；确认计划后才生成讲义与练习。
           <button class="link" id="privacy-toggle" type="button">查看范围</button>
         </div>

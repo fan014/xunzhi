@@ -13,25 +13,25 @@ DEFAULT_APPEARANCE = {
 }
 
 LIGHT = {
-    "--bg": "#f7f8fa",
-    "--surface": "#ffffff",
-    "--surface-soft": "#fbfcfd",
-    "--ink": "#1d2430",
-    "--ink-soft": "#3c4656",
-    "--muted": "#687182",
-    "--line": "#e2e6ec",
-    "--line-strong": "#d4dae3",
-    "--accent": "#315c93",
-    "--accent-strong": "#274b78",
-    "--accent-weak": "#edf2f9",
-    "--accent-soft": "#dce6f2",
-    "--ok": "#2c6b4f",
-    "--ok-bg": "#eaf3ee",
-    "--danger": "#a33a2b",
-    "--danger-bg": "#fbefec",
-    "--warn": "#8a5a13",
-    "--warn-bg": "#fbf3e4",
-    "--shadow": "0 12px 36px rgba(23, 32, 48, .14)",
+    "--bg": "#f2efe8",
+    "--surface": "#f9f7f2",
+    "--surface-soft": "#f4f1ea",
+    "--ink": "#383832",
+    "--ink-soft": "#4c483f",
+    "--muted": "#817d73",
+    "--line": "#e3ded3",
+    "--line-strong": "#d6cfc0",
+    "--accent": "#827c68",
+    "--accent-strong": "#6e6857",
+    "--accent-weak": "#ebe6d9",
+    "--accent-soft": "#ddd5c3",
+    "--ok": "#72866e",
+    "--ok-bg": "#e8ede4",
+    "--danger": "#a66d63",
+    "--danger-bg": "#f1e4e0",
+    "--warn": "#b18d5e",
+    "--warn-bg": "#f3eadb",
+    "--shadow": "0 2px 8px rgba(65, 57, 43, .04)",
 }
 
 DARK = {
@@ -101,12 +101,12 @@ input:hover, textarea:hover, select:hover,
 FONT_CSS = """
 body {
   font-family: var(--font-body);
-  font-size: calc(15.5px * var(--font-scale));
+  font-size: calc(15px * var(--font-scale));
 }
-h1 { font-size: calc(30px * var(--font-scale)); }
+h1 { font-size: calc(27px * var(--font-scale)); }
 h2 { font-size: calc(18px * var(--font-scale)); }
 h3 { font-size: calc(15.5px * var(--font-scale)); }
-.body, .explanation, .stem, .reader-text .body, .profile-finding p { font-size: calc(15.5px * var(--font-scale)); }
+.body, .explanation, .stem, .reader-text .body, .profile-finding p { font-size: calc(15px * var(--font-scale)); }
 .meta, .hint, .calendar-feedback, .brief-stat, .brief-advice-text,
 .assessment-source-name, .settings-card .field-label, .model-state p,
 .schedule-task-body .hint { font-size: calc(13.5px * var(--font-scale)); }
